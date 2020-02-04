@@ -70,7 +70,7 @@ RedBlack.prototype.addControls =  function()
 	this.findButton.onclick = this.findCallback.bind(this);
 	// custom
 	this.randomField = addControlToAlgorithmBar("Text", "");
-	this.randomField.onkeydown = this.returnSubmit(this.randomField,  this.randomCallback.bind(this), 4);
+	this.randomField.onkeydown = this.returnSubmit(this.randomField,  this.randomCallback.bind(this), 2);
 	this.randomButton = addControlToAlgorithmBar("Button", "Random");
 	this.randomButton.onclick = this.randomCallback.bind(this);
 	// /custom
