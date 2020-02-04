@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		
+		<title>
+			B-Tree Visualization 
+		</title>
+		
+		<!-- css sheet for how the page is laid out -->
+		
+		<link rel="stylesheet" href="../shared/visualizationPageStyle.css">
+			
+			
+		<!-- jqueury stuff.  Only used for the animation speed slider. -->
+		<link rel="stylesheet" href="../shared/jquery-ui-1.css">
+		<script src="../shared/jquery-1.js"></script>
+		<script src="../shared/jquery-ui-1.js"></script>
+				
+		<!-- Javascript for the actual visualization code -->
+		<script type="text/javascript" src="../shared/CustomEvents.js"> </script>
+		<script type="text/javascript" src="../shared/UndoFunctions.js"> </script>
+		<script type="text/javascript" src="../shared/AnimatedObject.js"> </script>
+		<script type="text/javascript" src="../shared/AnimatedLabel.js"> </script>
+		<script type="text/javascript" src="../shared/AnimatedCircle.js"> </script>
+		<script type="text/javascript" src="../shared/AnimatedRectangle.js"> </script>
+		<script type="text/javascript" src="../shared/AnimatedLinkedList.js"> </script>
+		<script type="text/javascript" src="../shared/HighlightCircle.js"> </script>
+		<script type="text/javascript" src="../shared/Line.js"> </script>
+		<script type="text/javascript" src="../shared/AnimatedBTreeNode.js"> </script>
+		
+		<script type="text/javascript" src="../shared/ObjectManager.js"> </script>
+		<script type="text/javascript" src="../shared/AnimationMain.js"> </script>
+		<script type="text/javascript" src="../shared/Algorithm.js"> </script>
+		<script type="text/javascript" src="script.js"> </script> 
+				
+			
+	 </head> 
+	
+	<body onload="init();" class="VisualizationMainPage">
+		
+		<div id="container">
+			
+			<div id="header">  
+				<h1>B-Trees</h1>
+			</div>
+			
+			<div id = "mainContent"> 
+			  
+				<div id = "algoControlSection">
+				  <!-- Table for buttons to control specific animation (insert/find/etc) -->
+				  <!-- (filled in by javascript code specific to the animtion) -->
+				  <table id="AlgorithmSpecificControls"> </table> 
+				</div>
+				
+				<!-- Drawing canvas where all animation is done.  Note:  can be resized in code -->
+				
+				
+				
+				<canvas id="canvas" width="1000" height="500"></canvas>
+				
+				<div id = "generalAnimationControlSection">
+				  <!-- Table for buttons to control general animation (play/pause/undo/etc) ->
+				   <!-- (filled in by javascript code, specifically AnimationMain.js)  -->
+				   
+				   <table id="GeneralAnimationControls">  </table>		
+				</div>
+				
+			  </div> <!-- mainContent -->
+			
+			<div id="footer">  
+				<p><a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">Algorithm Visualizations</a></p>
+			</div>
+
+		</div><!-- container -->
+	
+
+</body></html>
