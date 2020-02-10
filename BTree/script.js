@@ -31,8 +31,8 @@ var PRINT_VERTICAL_GAP = 20;
 var PRINT_MAX = 990;
 var PRINT_HORIZONTAL_GAP = 50;
 
-var MIN_MAX_DEGREE = 3;
-var MAX_MAX_DEGREE = 7;
+var MIN_MIN_DEGREE = 2;
+var MAX_MIN_DEGREE = 5;
 
 var HEIGHT_DELTA  = 50;
 var NODE_SPACING = 3; 
@@ -78,11 +78,11 @@ BTree.prototype.init = function(am, w, h)
 	this.addControls();
 	
 	
-	this.max_keys = 2;
+	this.max_keys = 3;
 	this.min_keys = 1;
 	this.split_index = 1;
 	
-	this.max_degree = 3;
+	this.min_degree = 2;
 	
 	
 	
@@ -151,21 +151,21 @@ BTree.prototype.addControls =  function()
 	
 	var i;
 	radioButtonNames = [];
-	for (i = MIN_MAX_DEGREE; i <= MAX_MAX_DEGREE; i++)
+	for (i = MIN_MIN_DEGREE; i <= MAX_MIN_DEGREE; i++)
 	{
-		radioButtonNames.push("Max. Degree = " + String(i));
+		radioButtonNames.push("Min. Degree = " + String(i));
 	}
 	
-	this.maxDegreeRadioButtons = addRadioButtonGroupToAlgorithmBar(radioButtonNames, "MaxDegree");
+	this.minDegreeRadioButtons = addRadioButtonGroupToAlgorithmBar(radioButtonNames, "MinDegree");
 	
-	this.maxDegreeRadioButtons[0].checked = true;
-	for(i = 0; i < this.maxDegreeRadioButtons.length; i++)
+	this.minDegreeRadioButtons[0].checked = true;
+	for(i = 0; i < this.minDegreeRadioButtons.length; i++)
 	{
-		this.maxDegreeRadioButtons[i].onclick = this.maxDegreeChangedHandler.bind(this,i+MIN_MAX_DEGREE);
+		this.minDegreeRadioButtons[i].onclick = this.minDegreeChangedHandler.bind(this,i+MIN_MIN_DEGREE);
 	}
 	
 	
-	this.premptiveSplitBox = addCheckboxToAlgorithmBar("Preemtive Split / Merge (Even max degree only)");
+	this.premptiveSplitBox = addCheckboxToAlgorithmBar("Preemtive Split");
 	this.premptiveSplitBox.onclick = this.premtiveSplitCallback.bind(this);
 	
 	
@@ -180,14 +180,14 @@ BTree.prototype.addControls =  function()
 BTree.prototype.reset = function()
 {
 	this.nextIndex = 3;
-	this.max_degree = 3;
+	this.min_degree = 2;
 	this.max_keys = 2;
 	this.min_keys = 1;
 	this.split_index = 1;
 	// NOTE: The order of these last two this.commands matters!
 	this.treeRoot = null;
 	this.ignoreInputs = true;
-	// maxDegreeButtonArray[this.max_degree].selected = true;
+	// minDegreeButtonArray[this.min_degree].selected = true;
 	this.ignoreInputs = false;
 }
 
@@ -200,35 +200,12 @@ BTree.prototype.enableUI = function(event)
 		this.controls[i].disabled = false;
 	}
 	
-	// TODO  Only enable even maxdegree if preemptive merge is on
-	
-	if (this.preemptiveSplit)
-	{
-		var initialEven = MIN_MAX_DEGREE % 2;
-		var i;
-		for (i = initialEven; i <= MAX_MAX_DEGREE - MIN_MAX_DEGREE; i+= 2)
-		{
-			this.maxDegreeRadioButtons[i].disabled = false;
-		}
+	for (i = 0; i < this.minDegreeRadioButtons.length; i++)
+	{	
+		this.minDegreeRadioButtons[i].disabled = false;
 	}
-	else
-	{
-		for (i = 0; i < this.maxDegreeRadioButtons.length; i++)
-		{	
-			this.maxDegreeRadioButtons[i].disabled = false;
-		}
-	}
-	
-	
-	
-	
-	
-	if (this.max_degree % 2 == 0)
-	{
-		this.premptiveSplitBox.disabled = false;
-	}
-	
-	
+
+	this.premptiveSplitBox.disabled = false;
 }
 BTree.prototype.disableUI = function(event)
 {
@@ -237,9 +214,9 @@ BTree.prototype.disableUI = function(event)
 		this.controls[i].disabled = true;
 	}
 
-	for (i = 0; i < this.maxDegreeRadioButtons.length; i++)
+	for (i = 0; i < this.minDegreeRadioButtons.length; i++)
 	{	
-		this.maxDegreeRadioButtons[i].disabled = true;
+		this.minDegreeRadioButtons[i].disabled = true;
 	}
 	
 	this.premptiveSplitBox.disabled = true;
@@ -250,11 +227,11 @@ BTree.prototype.disableUI = function(event)
 
 
 //TODO:  Fix me!
-BTree.prototype.maxDegreeChangedHandler = function(newMaxDegree, event) 
+BTree.prototype.minDegreeChangedHandler = function(newMinDegree, event) 
 {
-	if (this.max_degree != newMaxDegree)
+	if (this.min_degree != newMinDegree)
 	{
-		this.implementAction(this.changeDegree.bind(this), newMaxDegree);
+		this.implementAction(this.changeDegree.bind(this), newMinDegree);
         	animationManager.skipForward();
     	        animationManager.clearHistory();
 
@@ -455,13 +432,13 @@ BTree.prototype.changeDegree = function(degree)
 	var newDegree = degree;
 	this.ignoreInputs = true;
 	//TODO:  Check me!
-	this.maxDegreeRadioButtons[newDegree - MIN_MAX_DEGREE].checked = true;
+	this.minDegreeRadioButtons[newDegree - MIN_MIN_DEGREE].checked = true;
 	
 	this.ignoreInputs = false;
-	this.max_degree = newDegree;
-	this.max_keys = newDegree - 1;
-	this.min_keys = Math.floor((newDegree + 1) / 2) - 1;
-	this.split_index = Math.floor((newDegree - 1) / 2);
+	this.min_degree = newDegree;
+	this.max_keys = 2 * newDegree - 1;
+	this.min_keys = newDegree - 1;
+	this.split_index = newDegree - 1;
 	if (this.commands.length == 0)
 	{
 		this.cmd("Step");
