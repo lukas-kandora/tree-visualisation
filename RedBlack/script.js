@@ -61,11 +61,11 @@ RedBlack.prototype.addControls =  function()
 	this.insertButton = addControlToAlgorithmBar("Button", "Insert");
 	this.insertButton.onclick = this.insertCallback.bind(this);
 	this.deleteField = addControlToAlgorithmBar("Text", "");
-	this.deleteField.onkeydown = this.returnSubmit(this.deleteField,  this.deleteCallback.bind(this), 4);
+	this.deleteField.onkeydown = this.returnSubmit(this.deleteField,  this.deleteCallback.bind(this), 3);
 	this.deleteButton = addControlToAlgorithmBar("Button", "Delete");
 	this.deleteButton.onclick = this.deleteCallback.bind(this);
 	this.findField = addControlToAlgorithmBar("Text", "");
-	this.findField.onkeydown = this.returnSubmit(this.findField,  this.findCallback.bind(this), 4);
+	this.findField.onkeydown = this.returnSubmit(this.findField,  this.findCallback.bind(this), 3);
 	this.findButton = addControlToAlgorithmBar("Button", "Find");
 	this.findButton.onclick = this.findCallback.bind(this);
 	// custom
@@ -113,7 +113,7 @@ var BLUE = "#0000FF";
 
 var LINK_COLOR = "#000000"
 var BACKGROUND_COLOR = BACKGROUND_BLACK;
-var HIGHLIGHT_COLOR = "#007700";
+var HIGHLIGHT_COLOR = "#000077";
 var FOREGROUND_COLOR = FOREGROUND_BLACK;
 var PRINT_COLOR = FOREGROUND_COLOR
 
@@ -132,7 +132,7 @@ RedBlack.prototype.insertCallback = function(event)
 {
 	var insertedValue = this.insertField.value;
 	// Get text value
-	insertedValue = this.normalizeNumber(insertedValue, 4);
+	insertedValue = this.normalizeNumber(insertedValue, 3);
 	if (insertedValue != "")
 	{
 		// set text value
@@ -146,7 +146,7 @@ RedBlack.prototype.textToValues = function(text)
 {
 	return text.split(/[^0-9]+/)
 		.filter(number => number.length != 0)
-		.map(number => this.normalizeNumber(number, 4))
+		.map(number => this.normalizeNumber(number, 3))
 }
 
 RedBlack.prototype.insertElements = function(insertedValues) {
@@ -168,7 +168,7 @@ RedBlack.prototype.deleteCallback = function(event)
 	var deletedValue = this.deleteField.value;
 	if (deletedValue != "")
 	{
-		deletedValue = this.normalizeNumber(deletedValue, 4);
+		deletedValue = this.normalizeNumber(deletedValue, 3);
 		this.deleteField.value = "";
 		this.implementAction(this.deleteElement.bind(this),deletedValue);		
 	}
@@ -183,7 +183,7 @@ RedBlack.prototype.randomCallback = function(event)
 
 	values = Array.from({length: randomCount}, () => {
 		var number = Math.floor(Math.random() * 1e4).toString(10)
-		number = this.normalizeNumber(number, 4)
+		number = this.normalizeNumber(number, 3)
 		return number
 	})
 	this.implementAction(this.insertElements.bind(this),values)
@@ -195,7 +195,7 @@ RedBlack.prototype.findCallback = function(event)
 	var findValue = this.findField.value;
 	if (findValue != "")
 	{
-		findValue = this.normalizeNumber(findValue, 4);
+		findValue = this.normalizeNumber(findValue, 3);
 		this.findField.value = "";
 		this.implementAction(this.findElement.bind(this),findValue);		
 	}
@@ -1484,6 +1484,8 @@ RedBlack.prototype.disableUI = function(event)
 	this.deleteButton.disabled = true;
 	this.findField.disabled = true;
 	this.findButton.disabled = true;
+	this.randomField.disabled = true;
+	this.randomButton.disabled = true;
 	this.printButton.disabled = true;
 }
 
@@ -1495,6 +1497,8 @@ RedBlack.prototype.enableUI = function(event)
 	this.deleteButton.disabled = false;
 	this.findField.disabled = false;
 	this.findButton.disabled = false;
+	this.randomField.disabled = false;
+	this.randomButton.disabled = false;
 	this.printButton.disabled = false;
 }
 

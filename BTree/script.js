@@ -43,10 +43,10 @@ var NODE_HEIGHT = 20;
 var MESSAGE_X = 5;
 var MESSAGE_Y = 10;
 
-var LINK_COLOR = "#007700";
-var HIGHLIGHT_CIRCLE_COLOR = "#007700";
-var FOREGROUND_COLOR = "#007700";
-var BACKGROUND_COLOR = "#EEFFEE";
+var LINK_COLOR = "#000077";
+var HIGHLIGHT_CIRCLE_COLOR = "#000077";
+var FOREGROUND_COLOR = "#000077";
+var BACKGROUND_COLOR = "#EEEEFF";
 var PRINT_COLOR = FOREGROUND_COLOR;
 
 
@@ -117,7 +117,7 @@ BTree.prototype.addControls =  function()
 	this.controls.push(this.insertButton);
 	
 	this.deleteField = addControlToAlgorithmBar("Text", "");
-	this.deleteField.onkeydown = this.returnSubmit(this.deleteField,  this.deleteCallback.bind(this), 4);
+	this.deleteField.onkeydown = this.returnSubmit(this.deleteField,  this.deleteCallback.bind(this), 3);
 	this.controls.push(this.deleteField);
 	
 	this.deleteButton = addControlToAlgorithmBar("Button", "Delete");
@@ -125,7 +125,7 @@ BTree.prototype.addControls =  function()
 	this.controls.push(this.deleteButton);
 	
 	this.findField = addControlToAlgorithmBar("Text", "");
-	this.findField.onkeydown = this.returnSubmit(this.findField,  this.findCallback.bind(this), 4);
+	this.findField.onkeydown = this.returnSubmit(this.findField,  this.findCallback.bind(this), 3);
 	this.controls.push(this.findField);
 	
 	this.findButton = addControlToAlgorithmBar("Button", "Find");
@@ -153,7 +153,7 @@ BTree.prototype.addControls =  function()
 	radioButtonNames = [];
 	for (i = MIN_MIN_DEGREE; i <= MAX_MIN_DEGREE; i++)
 	{
-		radioButtonNames.push("Min. Degree = " + String(i));
+		radioButtonNames.push("Min. Degree t = " + String(i));
 	}
 	
 	this.minDegreeRadioButtons = addRadioButtonGroupToAlgorithmBar(radioButtonNames, "MinDegree");
@@ -244,7 +244,7 @@ BTree.prototype.minDegreeChangedHandler = function(newMinDegree, event)
 BTree.prototype.insertCallback = function(event)
 {
 	var insertedValue;
-	insertedValue = this.normalizeNumber(this.insertField.value, 4);
+	insertedValue = this.normalizeNumber(this.insertField.value, 3);
 	if (insertedValue != "")
 	{
 		this.insertField.value = "";
@@ -257,7 +257,7 @@ BTree.prototype.textToValues = function(text)
 {
 	return text.split(/[^0-9]+/)
 		.filter(number => number.length != 0)
-		.map(number => this.normalizeNumber(number, 4))
+		.map(number => this.normalizeNumber(number, 3))
 }
 
 BTree.prototype.insertElements = function(insertedValues) {
@@ -279,7 +279,7 @@ BTree.prototype.deleteCallback = function(event)
 	var deletedValue = this.deleteField.value;
 	if (deletedValue != "")
 	{
-		deletedValue = this.normalizeNumber(this.deleteField.value, 4);
+		deletedValue = this.normalizeNumber(this.deleteField.value, 3);
 		this.deleteField.value = "";
 		this.implementAction(this.deleteElement.bind(this),deletedValue);		
 	}
@@ -460,7 +460,7 @@ BTree.prototype.randomCallback = function(event)
 
 	values = Array.from({length: randomCount}, () => {
 		var number = Math.floor(Math.random() * 1e4).toString(10)
-		number = this.normalizeNumber(number, 4)
+		number = this.normalizeNumber(number, 3)
 		return number
 	})
 	this.implementAction(this.insertElements.bind(this),values)
@@ -470,7 +470,7 @@ BTree.prototype.randomCallback = function(event)
 BTree.prototype.findCallback = function(event)
 {
 	var findValue;
-	findValue = this.normalizeNumber(this.findField.value, 4);
+	findValue = this.normalizeNumber(this.findField.value, 3);
 	this.findField.value = "";
 	this.implementAction(this.findElement.bind(this),findValue);						
 }

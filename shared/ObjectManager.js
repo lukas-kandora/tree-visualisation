@@ -63,7 +63,7 @@ function ObjectManager()
 			this.framenum = 0;
 		
 		this.ctx.clearRect(0,0,this.width,this.height); // clear canvas
-		this.statusReport.y = this.height - 15;
+		this.statusReport.y = this.height - 30;
 		
 		var i;
 		var j;
@@ -561,7 +561,7 @@ function ObjectManager()
 	this.getTextWidth = function(text)
 	{
 		// TODO:  Need to make fonts more flexible, and less hardwired.
-		this.ctx.font = '10px sans-serif';
+		this.ctx.font = '16px sans-serif';
 		if (text==undefined)
 		{
 			w = 3;

@@ -160,7 +160,7 @@ function animStarted()
 	stepForwardButton.disabled = true;
 	stepBackButton.disabled = true;
 	objectManager.statusReport.setText("Animation Running");
-	objectManager.statusReport.setForegroundColor("#009900");
+	objectManager.statusReport.setForegroundColor("#000099");
 }
 
 function animEnded()

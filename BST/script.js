@@ -27,10 +27,10 @@
 
 // Constants.
 
-BST.LINK_COLOR = "#007700";
-BST.HIGHLIGHT_CIRCLE_COLOR = "#007700";
-BST.FOREGROUND_COLOR = "#007700";
-BST.BACKGROUND_COLOR = "#EEFFEE";
+BST.LINK_COLOR = "#000077";
+BST.HIGHLIGHT_CIRCLE_COLOR = "#000077";
+BST.FOREGROUND_COLOR = "#000077";
+BST.BACKGROUND_COLOR = "#EEEEFF";
 BST.PRINT_COLOR = BST.FOREGROUND_COLOR;
 
 BST.WIDTH_DELTA  = 50;
@@ -80,11 +80,11 @@ BST.prototype.addControls =  function()
 	this.insertButton = addControlToAlgorithmBar("Button", "Insert");
 	this.insertButton.onclick = this.insertCallback.bind(this);
 	this.deleteField = addControlToAlgorithmBar("Text", "");
-	this.deleteField.onkeydown = this.returnSubmit(this.deleteField,  this.deleteCallback.bind(this), 4);
+	this.deleteField.onkeydown = this.returnSubmit(this.deleteField,  this.deleteCallback.bind(this), 3);
 	this.deleteButton = addControlToAlgorithmBar("Button", "Delete");
 	this.deleteButton.onclick = this.deleteCallback.bind(this);
 	this.findField = addControlToAlgorithmBar("Text", "");
-	this.findField.onkeydown = this.returnSubmit(this.findField,  this.findCallback.bind(this), 4);
+	this.findField.onkeydown = this.returnSubmit(this.findField,  this.findCallback.bind(this), 3);
 	this.findButton = addControlToAlgorithmBar("Button", "Find");
 	this.findButton.onclick = this.findCallback.bind(this);
 	// custom
@@ -107,7 +107,7 @@ BST.prototype.insertCallback = function(event)
 {
 	var insertedValue = this.insertField.value;
 	// Get text value
-	insertedValue = this.normalizeNumber(insertedValue, 4);
+	insertedValue = this.normalizeNumber(insertedValue, 3);
 	if (insertedValue != "")
 	{
 		// set text value
@@ -121,7 +121,7 @@ BST.prototype.textToValues = function(text)
 {
 	return text.split(/[^0-9]+/)
 		.filter(number => number.length != 0)
-		.map(number => this.normalizeNumber(number, 4))
+		.map(number => this.normalizeNumber(number, 3))
 }
 
 BST.prototype.insertElements = function(insertedValues) {
@@ -143,7 +143,7 @@ BST.prototype.deleteCallback = function(event)
 	var deletedValue = this.deleteField.value;
 	if (deletedValue != "")
 	{
-		deletedValue = this.normalizeNumber(deletedValue, 4);
+		deletedValue = this.normalizeNumber(deletedValue, 3);
 		this.deleteField.value = "";
 		this.implementAction(this.deleteElement.bind(this),deletedValue);		
 	}
@@ -221,7 +221,7 @@ BST.prototype.randomCallback = function(event)
 
 	values = Array.from({length: randomCount}, () => {
 		var number = Math.floor(Math.random() * 1e4).toString(10)
-		number = this.normalizeNumber(number, 4)
+		number = this.normalizeNumber(number, 3)
 		return number
 	})
 	this.implementAction(this.insertElements.bind(this),values)
@@ -231,7 +231,7 @@ BST.prototype.randomCallback = function(event)
 BST.prototype.findCallback = function(event)
 {
 	var findValue;
-	findValue = this.normalizeNumber(this.findField.value, 4);
+	findValue = this.normalizeNumber(this.findField.value, 3);
 	this.findField.value = "";
 	this.implementAction(this.findElement.bind(this),findValue);						
 }
@@ -694,6 +694,8 @@ BST.prototype.disableUI = function(event)
 	this.deleteButton.disabled = true;
 	this.findField.disabled = true;
 	this.findButton.disabled = true;
+	this.randomField.disabled = true;
+	this.randomButton.disabled = true;
 	this.printButton.disabled = true;
 }
 
@@ -705,6 +707,8 @@ BST.prototype.enableUI = function(event)
 	this.deleteButton.disabled = false;
 	this.findField.disabled = false;
 	this.findButton.disabled = false;
+	this.randomField.disabled = false;
+	this.randomButton.disabled = false;
 	this.printButton.disabled = false;
 }
 
