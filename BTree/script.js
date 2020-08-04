@@ -144,6 +144,12 @@ BTree.prototype.addControls =  function()
 	this.printButton = addControlToAlgorithmBar("Button", "Print");
 	this.printButton.onclick = this.printCallback.bind(this);
 	this.controls.push(this.printButton);
+	// custom
+	this.saveButton = addControlToAlgorithmBar("Button", "Save");
+	this.saveButton.onclick = this.saveCallback.bind(this);
+	this.controls.push(this.saveButton);
+	// /custom
+
 	
 	this.clearButton = addControlToAlgorithmBar("Button", "Clear");
 	this.clearButton.onclick = this.clearCallback.bind(this);
@@ -464,6 +470,89 @@ BTree.prototype.randomCallback = function(event)
 		return number
 	})
 	this.implementAction(this.insertElements.bind(this),values)
+}
+
+BTree.prototype.saveCallback = function(event)
+{
+	const root = this.treeRoot;
+
+	if (!root) {
+		return;
+	}
+	
+	let leftmost = root;
+	let children = leftmost.children;
+	while (children.length > 0) {
+		leftmost = children[0];
+		children = leftmost.children;
+	}
+	delete children;
+
+	const xOffset = leftmost.x - 25 - leftmost.numKeys * 20;
+	const yOffset = root.y - 25;
+
+	const nodes = [root];
+	let content = "";
+
+	while (0 < nodes.length) {
+
+		const node = nodes.pop();
+
+		const x = node.x;
+		const y = node.y;
+
+		const parent = node.parent;
+		if (parent) {
+			let x1 = x;
+			let y1 = y;
+
+			let x2 = parent.x;
+			let y2 = parent.y;
+
+			x2 += parent.numKeys * -20 + parent.children.indexOf(node) * 40;
+
+			content += `
+	<line x1="`+ (x1 - xOffset) + `" y1="`+ (y1 - yOffset - 10) + `" x2="`+ (x2 - xOffset) + `" y2="`+ (y2 - yOffset + 10) + `" />`;
+		}
+
+
+		content += `
+	<rect x="`+ (x - xOffset - node.numKeys * 20) + `" y="` + (y - yOffset - 10) + `" width="` + (node.numKeys * 40) + `" height="20"/>`;
+		
+		content += node.keys.slice(0, node.numKeys).map((val, index) => `
+	<text x="`+ (x - xOffset - node.numKeys * 20 + index * 40 + 20) + `" y="` + (y - yOffset) + `" text-anchor="middle" dominant-baseline="central">` + val + `</text>`)
+			.join();
+
+		if (!node.isLeaf)
+			nodes.push(...(node.children.slice(0, node.numKeys + 1).reverse()));
+	}
+
+	content = `
+<svg xmlns="http://www.w3.org/2000/svg">
+	<style>
+	rect {
+		fill: ` + BACKGROUND_COLOR + `;
+		stroke: ` + FOREGROUND_COLOR +`;
+		stroke-width: 1px;
+	}
+	text {
+		fill: ` + FOREGROUND_COLOR + `;
+		font-size: 16px;
+		font-family: sans-serif;
+	}
+	line {
+		stroke: ` + FOREGROUND_COLOR + `;
+	}
+	</style>` + content + `
+</svg>\n`;
+
+	content = "data:image/svg+xml," + encodeURIComponent(content);
+
+	let a = document.createElement('a');
+	a.download = "image.svg";
+	a.target = "_blank";
+	a.href = content;
+	a.click();
 }
 // /custom
 

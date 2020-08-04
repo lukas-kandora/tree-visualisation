@@ -7,6 +7,7 @@ A modification of [David Galles' visualisation](https://www.cs.usfca.edu/~galles
 - **Find:** Enter a number. Press `Find`.
 - **Polulate randomly:** Enter a count between `1` and `99`. Press `Random`.
 - **In-order deth first search:** Press `Print`.
+- **Export to SVG:** Press `Save`.
 
 ## Visualisations
 - [Binary Search Tree](./BST/)
@@ -22,6 +23,7 @@ A modification of [David Galles' visualisation](https://www.cs.usfca.edu/~galles
 - Only numbers can be added
 - Maximum value is `999`.
 - A number of random values between `000` and `999` can be inserted
+- Trees can be exported to SVG.
 
 #### B-Trees
 - Changed degree notation to be in line with *Cormen et al. - Introduction to Algorithms*

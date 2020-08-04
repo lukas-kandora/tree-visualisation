@@ -76,6 +76,10 @@ RedBlack.prototype.addControls =  function()
 	// /custom
 	this.printButton = addControlToAlgorithmBar("Button", "Print");
 	this.printButton.onclick = this.printCallback.bind(this);
+	// custom
+	this.saveButton = addControlToAlgorithmBar("Button", "Save");
+	this.saveButton.onclick = this.saveCallback.bind(this);
+	// custom
 	
 	this.showNullLeaves = addCheckboxToAlgorithmBar("Show Null Leaves");
 	this.showNullLeaves.onclick = this.showNullLeavesCallback.bind(this);
@@ -187,6 +191,111 @@ RedBlack.prototype.randomCallback = function(event)
 		return number
 	})
 	this.implementAction(this.insertElements.bind(this),values)
+}
+
+RedBlack.prototype.saveCallback = function(event)
+{
+	const root = this.treeRoot;
+
+	if (!root) {
+		return;
+	}
+	
+	let leftmost = root;
+	let child = leftmost.left;
+	while (child) {
+		leftmost = child;
+		child = child.left;
+	}
+	delete child;
+
+	const xOffset = leftmost.x - 25;
+	const yOffset = root.y - 25;
+
+	const nodes = [root];
+	let content = "";
+
+	while (0 < nodes.length) {
+
+		const node = nodes.pop();
+
+		const x = node.x;
+		const y = node.y;
+
+		const parent = node.parent;
+		if (parent) {
+			let x1 = x;
+			let y1 = y;
+
+			let x2 = parent.x;
+			let y2 = parent.y;
+
+			const deltaX = x2 - x1;
+			const deltaY = y2 - y1;
+
+			const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+			x1 += 20 * deltaX / length;
+			x2 -= 20 * deltaX / length;
+			y1 += 20 * deltaY / length;
+			y2 -= 20 * deltaY / length;
+
+			content += `
+	<line x1="`+ (x1 - xOffset) + `" y1="`+ (y1 - yOffset) + `" x2="`+ (x2 - xOffset) + `" y2="`+ (y2 - yOffset) + `" />`;
+		}
+
+
+		content += `
+	<circle class="` + (node.blackLevel ? "black" : "red") + `" cx="`+ (x - xOffset) + `" cy="` + (y - yOffset) + `" r="20"/>
+	<text class="` + (node.blackLevel ? "black" : "red") + `" x="`+ (x - xOffset) + `" y="` + (y - yOffset) + `" text-anchor="middle" dominant-baseline="central">` + node.data + `</text>`;
+
+		const right = node.right;
+		if (right && !right.phantomLeaf) {
+			nodes.push(right);
+		}
+		const left = node.left;
+		if (left && !left.phantomLeaf) {
+			nodes.push(left);
+		}
+	}
+
+	content = `
+<svg xmlns="http://www.w3.org/2000/svg">
+	<style>
+	circle {
+		stroke-width: 1px;
+	}
+	circle.red {
+		fill: ` + BACKGROUND_RED + `;
+		stroke: ` + FOREGROUND_RED +`;
+	}
+	circle.black {
+		fill: ` + BACKGROUND_BLACK + `;
+		stroke: ` + FOREGROUND_BLACK +`;
+	}
+	text {
+		font-size: 16px;
+		font-family: sans-serif;
+	}
+	text.red {
+		fill: ` + FOREGROUND_RED + `;
+	}
+	text.black {
+		fill: ` + FOREGROUND_BLACK + `;
+	}
+	line {
+		stroke: ` + LINK_COLOR + `;
+	}
+	</style>` + content + `
+</svg>\n`;
+
+	content = "data:image/svg+xml," + encodeURIComponent(content);
+
+	let a = document.createElement('a');
+	a.download = "image.svg";
+	a.target = "_blank";
+	a.href = content;
+	a.click();
 }
 // /custom
 
@@ -1487,6 +1596,7 @@ RedBlack.prototype.disableUI = function(event)
 	this.randomField.disabled = true;
 	this.randomButton.disabled = true;
 	this.printButton.disabled = true;
+	this.saveButton.disabled = true;
 }
 
 RedBlack.prototype.enableUI = function(event)
@@ -1500,6 +1610,7 @@ RedBlack.prototype.enableUI = function(event)
 	this.randomField.disabled = false;
 	this.randomButton.disabled = false;
 	this.printButton.disabled = false;
+	this.saveButton.disabled = false;
 }
 
 
